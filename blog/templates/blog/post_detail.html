@@ -6,41 +6,67 @@
 
     <div class="card-body">
 
-        <h2>{{ post.title }}</h2>
+        <h2 class="mb-3">
 
-        <hr>
+            {{ post.title }}
 
-        <p>{{ post.content }}</p>
+        </h2>
+
+        {% if post.image %}
+
+        <img src="{{ post.image.url }}"
+             class="img-fluid rounded mb-4"
+             style="width:100%; max-height:500px; object-fit:cover;">
+
+        {% endif %}
+
+        <p class="fs-5">
+
+            {{ post.content }}
+
+        </p>
 
         <hr>
 
         <p>
+
             <strong>Author:</strong>
+
             {{ post.author }}
+
         </p>
 
         <p>
+
             <strong>Created:</strong>
+
             {{ post.created_at }}
+
         </p>
 
         {% if user == post.author %}
 
         <a href="{% url 'post_update' post.pk %}"
            class="btn btn-warning">
+
             ✏ Edit
+
         </a>
 
         <a href="{% url 'post_delete' post.pk %}"
            class="btn btn-danger">
+
             🗑 Delete
-        ,</a>
+
+        </a>
 
         {% endif %}
 
         <a href="{% url 'post_list' %}"
            class="btn btn-secondary">
+
             ← Back
+
         </a>
 
     </div>

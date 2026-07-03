@@ -34,29 +34,27 @@ def post_detail(request, pk):
 
 
 
-
 @login_required
 def post_create(request):
-    if request.method == "POST":
-        form = PostForm(request.POST)
 
+    if request.method == "POST":
+        form = PostForm(request.POST, request.FILES)
 
         if form.is_valid():
             post = form.save(commit=False)
             post.author = request.user
             post.save()
 
-            return redirect("post_list")
-        
-    else:
-        form=PostForm()
+            messages.success(request, "Post created successfully!")
 
-        context={
-            "form":form
-        }
-        
-        return render(request, "blog/post_form.html", context)
-    
+            return redirect("post_list")
+
+    else:
+        form = PostForm()
+
+    return render(request, "blog/post_form.html", {
+        "form": form
+    })
 
 
 
@@ -73,7 +71,8 @@ def post_update(request, pk):
         return HttpResponseForbidden("You are not allowed to edit this post.")
 
     if request.method == "POST":
-        form = PostForm(request.POST, instance=post)
+        form = PostForm(request.POST, request.FILES, instance=post)
+        
 
         if form.is_valid():
             form.save()
